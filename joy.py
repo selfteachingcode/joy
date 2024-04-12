@@ -213,6 +213,21 @@ class Shape:
             </svg>
         """
         return SVG([self], width=width, height=height).render()
+    
+    def save(self, filename):
+        """Saves the SVG representation of the object to a file.
+
+
+        Example:
+
+            >>> c = Shape(tag='circle', cx=100, cy=100, r=50)
+            >>> c.save(filename="circle.svg")
+        """
+        try:
+            with open(filename, 'w') as file:
+                file.write(self.as_svg())
+        except IOError as e:
+            print(f"Failed to save SVG: {e}")
 
     def __add__(self, shape):
         if not isinstance(shape, Shape):
@@ -772,6 +787,21 @@ def show(*shapes):
 
     from IPython.display import display
     display(img)
+
+
+def save(*shapes, filename):
+    """saves the given shapes.
+
+    Parameters:
+        shapes:
+            The shapes to show.
+    
+    Examples:
+        >>> save(circle(), rect(), filename="my_shapes.svg")
+    """
+    img = SVG(shapes)
+    img.save(filename=filename)
+
 
 def circle(x=0, y=0, r=100, **kwargs):
     """Creates a circle with center at (x, y) and radius of r.
