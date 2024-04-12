@@ -268,6 +268,13 @@ class SVG:
         node = Group(self.nodes) | Scale(sx=1, sy=-1)
 
         return svg_header + node._svg() + svg_footer
+    
+    def save(self, filename):
+        try:
+            with open(filename, 'w') as file:
+                file.write(self.render())
+        except IOError as e:
+            print(f"Failed to save SVG: {e}")
 
     def _repr_svg_(self):
         return self.render()
@@ -800,8 +807,8 @@ def save(*shapes, filename):
         >>> save(circle(), rect(), filename="my_shapes.svg")
     """
     img = SVG(shapes)
-    img.save(filename=filename)
-
+    x = img.save(filename)
+    print(x)
 
 def circle(x=0, y=0, r=100, **kwargs):
     """Creates a circle with center at (x, y) and radius of r.
